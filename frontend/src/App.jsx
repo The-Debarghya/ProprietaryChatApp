@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import Home from './Components/Home'
-import Chats from './Components/Chats'
+import Home from './Routes/Home'
+import Chats from './Routes/Chats'
 
 function App() {
   const [count, setCount] = useState(0)
