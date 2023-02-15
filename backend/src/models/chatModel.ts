@@ -1,8 +1,8 @@
 import {Schema, model} from "mongoose";
 
 interface ChatsIface{
-    chatName: String,
-    isGroupChat: Boolean,
+    chatName: string,
+    isGroupChat: boolean,
     users: Schema.Types.ObjectId[],
     latestMsg: Schema.Types.ObjectId,
     groupAdmin: Schema.Types.ObjectId

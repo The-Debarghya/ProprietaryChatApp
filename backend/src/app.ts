@@ -4,7 +4,9 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 
 import chats from "./data/data.js";
+import connectDb from "./config/database.js";
 dotenv.config();
+connectDb()
 
 const app: express.Application = express()
 

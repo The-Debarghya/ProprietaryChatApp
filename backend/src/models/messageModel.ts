@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 interface MessageIface{
     sender: Schema.Types.ObjectId,
-    content: String,
+    content: string,
     chat: Schema.Types.ObjectId
 }
 
