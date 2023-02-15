@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import express from "express";
+import cors from "cors";
 import * as dotenv from "dotenv";
 
 import chats from "./data/data.js";
@@ -8,6 +9,7 @@ dotenv.config();
 const app: express.Application = express()
 
 const port = process.env.PORT
+app.use(cors())
 
 app.get('/', (req: Request, res: Response) => {
     res.send("express typescript")
