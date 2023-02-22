@@ -9,7 +9,7 @@ const connectDb = async () => {
         const uri: string = process.env.MONGO_URL || ""
         const connection = await connect(uri)
         mongoose.set('strictQuery', true)
-        console.log(`Mongodb Connected Successfully`)
+        console.log(`Mongodb Connected Successfully!`)
     } catch (error: unknown) {
         console.log(`Error:${error}`)
     }

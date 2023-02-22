@@ -5,6 +5,8 @@ import * as dotenv from "dotenv";
 
 import chats from "./data/data.js";
 import connectDb from "./config/database.js";
+import usrRoutes from "./routes/usrRoutes.js"
+import { errorHandler, notFound } from "./middlewares/errorHandlers.js";
 dotenv.config();
 connectDb()
 
@@ -12,20 +14,17 @@ const app: express.Application = express()
 
 const port = process.env.PORT
 app.use(cors())
+app.use(express.json())
 
 app.get('/', (req: Request, res: Response) => {
     res.send("express typescript")
 })
 
-app.get('/api/chat', (req: Request, res: Response) => {
-    res.send(chats);
-})
+app.use('/api/user', usrRoutes);
 
-app.get('/api/chat/:id', (req: Request, res: Response) => {
-    const singleChat = chats.find((c) => c._id === req.params.id);
-    res.send(singleChat)
-})
+app.use(notFound)
+app.use(errorHandler)
 
 app.listen(port, (): void => {
-    console.log("express typescript")
+    console.log(`Server is up and running at ::${port}`)
 })
