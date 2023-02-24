@@ -52,4 +52,16 @@ const authenticateUser = asyncHandler(async (req: Request, res: Response) => {
     }
 })
 
-export { registerUser, authenticateUser };
+const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
+    const searchKey = req.query.search ? {
+        $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+        ]
+    } : {}
+
+    const users = await User.findOne(searchKey).find({_id: {$ne: req.user._id}});
+    res.send(users)
+})
+
+export { registerUser, authenticateUser, getAllUsers };

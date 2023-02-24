@@ -3,9 +3,9 @@ import express from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
 
-import chats from "./data/data.js";
 import connectDb from "./config/database.js";
-import usrRoutes from "./routes/usrRoutes.js"
+import usrRoutes from "./routes/usrRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js"
 import { errorHandler, notFound } from "./middlewares/errorHandlers.js";
 dotenv.config();
 connectDb()
@@ -21,6 +21,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/api/user', usrRoutes);
+app.use('/api/chat', chatRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
