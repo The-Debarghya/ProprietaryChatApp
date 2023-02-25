@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import { Request, Response, NextFunction } from "express";
 import * as dotenv from "dotenv";
-import { User } from "../models/userModel";
+import { User } from "../models/userModel.js";
 dotenv.config()
 //https://siddharthac6.medium.com/json-web-token-jwt-the-right-way-of-implementing-with-node-js-65b8915d550e
 

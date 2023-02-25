@@ -101,7 +101,7 @@ const Signup = () => {
             })
            // localStorage.setItem("userInfo", JSON.stringify(data))
             setloading(false)
-
+            
            // navigate("/chats")
         } catch (error) {
             toast({
@@ -121,16 +121,16 @@ const Signup = () => {
         <VStack spacing="5px" color="black">
             <FormControl id='user-name' isRequired>
                 <FormLabel>Name</FormLabel>
-                <Input placeholder='Username' borderColor="blue.300" onChange={(e) => setName(e.target.value)} />
+                <Input placeholder='Username' value={Name} borderColor="blue.300" onChange={(e) => setName(e.target.value)} />
             </FormControl>
             <FormControl id='email' isRequired>
                 <FormLabel>Email</FormLabel>
-                <Input placeholder='user@example.com' type="email" pattern=".+@[a-z]+\.com" borderColor="blue.300" onChange={(e) => setEmail(e.target.value)} />
+                <Input placeholder='user@example.com' value={Email} type="email" pattern=".+@[a-z]+\.com" borderColor="blue.300" onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
             <FormControl id='password' isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
-                    <Input type={show ? "text" : "password"} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />
+                    <Input type={show ? "text" : "password"} value={Password} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={handleClick} textColor="blue.300">
                             {show ? "Hide" : "Show"}
@@ -141,7 +141,7 @@ const Signup = () => {
             <FormControl id='cnf-password' isRequired>
                 <FormLabel>Confirm Password</FormLabel>
                 <InputGroup>
-                    <Input type={show ? "text" : "password"} borderColor="blue.300" onChange={(e) => setConfirmPass(e.target.value)} />
+                    <Input type={show ? "text" : "password"} value={ConfirmPass} borderColor="blue.300" onChange={(e) => setConfirmPass(e.target.value)} />
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={handleClick} textColor="blue.300">
                             {show ? "Hide" : "Show"}

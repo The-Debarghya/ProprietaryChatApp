@@ -1,25 +1,20 @@
+import { Box } from '@chakra-ui/react';
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-
-const baseUrl = "http://127.0.0.1:3000"
+import AllChats from '../Components/Misc/AllChats';
+import ChatBox from '../Components/Misc/ChatBox';
+import SideSearch from '../Components/Misc/SideSearch';
+import { ChatState } from '../Context/ChatProvider'
 
 const Chats = () => {
-    const [Chats, setChats] = useState([])
-
-    const fetchData = async () => {
-        const {data} = await axios.get(`${baseUrl}/api/chat`)
-        setChats(data)
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
-
+    const { user } = ChatState();
     return (
-        <div>
-            {Chats.map((chat) => (
-                <div key={chat._id}>{chat.chatName}</div>
-            ))}
+        <div style={{ width: "100%" }}>
+            {user && <SideSearch />}
+            <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
+                {user && <AllChats />}
+                {user && <ChatBox  />} 
+            </Box>
         </div>
     )
 }
