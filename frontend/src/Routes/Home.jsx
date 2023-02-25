@@ -32,7 +32,7 @@ const Home = () => {
         <ChatIcon />
         <Text fontSize="4xl" fontFamily="Fira Sans" fontWeight="bold">PropChat</Text>
       </Box>
-      <Box bg="white" w="100%" p={4} borderRadius="1g" color="black" fontWeight="bold" borderWidth="1px">
+      <Box bg="white" w="100%" p={4} borderRadius="lg" color="black" fontWeight="bold" borderWidth="1px">
         <Tabs variant='soft-rounded'>
           <TabList mb="1em">
             <Tab width="50%">Sign In</Tab>
