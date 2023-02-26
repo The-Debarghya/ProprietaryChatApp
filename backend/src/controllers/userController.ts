@@ -37,7 +37,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
 const authenticateUser = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email }).select("+password")
     if (user) {
         const auth = await user.validatePassword(password)
         if (auth) {

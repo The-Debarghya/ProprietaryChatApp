@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ChatState } from '../../Context/ChatProvider'
 import ChatLoading from './ChatLoading'
 import ProfileModal from './ProfileModal'
+import UserListItem from '../User/UserListItem'
 import { MdPersonSearch } from 'react-icons/md'
 
 const SideSearch = () => {
@@ -38,8 +39,7 @@ const SideSearch = () => {
                     Authorization: `Bearer ${user.token}`
                 }
             }
-
-            const data = await axios.get(`/api/user?search=${search}`, headers)
+            const {data} = await axios.get(`/api/user?search=${search}`, headers)
             setLoading(false)
             setSearchResults(data)
         } catch (error) {
@@ -57,14 +57,14 @@ const SideSearch = () => {
     const accessChat = async (userId) => {
         setLoadingChat(true)
         try {
-            
+
             const headers = {
                 headers: {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${user.token}`
                 }
             }
-            const {data} = await axios.post("/api/chat", {userId}, headers)
+            const { data } = await axios.post("/api/chat", { userId }, headers)
             /** Ignore already added chats */
             if (!chats.find((c) => c._id === data._id)) {
                 setChats([data, ...chats])
@@ -93,7 +93,7 @@ const SideSearch = () => {
                 <Tooltip label="Search Users To Chat" hasArrow placement='bottom-end'>
                     <Button variant="ghost" onClick={onOpen}>
                         <MdPersonSearch />
-                        <Text d={{ base: "none", md: "flex" }} p="4px">
+                        <Text display={{ base: "none", md: "flex" }} p="4px">
                             Search Users
                         </Text>
                     </Button>
@@ -126,14 +126,14 @@ const SideSearch = () => {
                 <DrawerContent>
                     <DrawerHeader borderBottomWidth="1px">Search or Start a New Chat</DrawerHeader>
                     <DrawerBody>
-                        <Box d="flex" paddingBottom={2}>
-                            <Input placeholder='Search by Name or Email' mr={2} value={search} onChange={(e) => setSearch(e.target.value)} />
-                            <Button onClick={handleSearch} >Get</Button>
+                        <Box display="flex" paddingBottom={2}>
+                            <Input placeholder='Name or Email' mr={2} value={search} onChange={(e) => setSearch(e.target.value)} />
+                            <Button onClick={handleSearch} >Search</Button>
                         </Box>
-                        {loading ? (<ChatLoading />) : (searchResults?.map(user => {
-                            <UserListItem key={user._id} user={user} handleClick={()=> accessChat(user._id)} />
-                        })) }
-                        {loadingChat && <Spinner ml="auto" d="flex" />}
+                        {loading ? (<ChatLoading />) : (searchResults?.map((user) => {
+                            return <UserListItem key={user._id} user={user} handleClick={() => accessChat(user._id)} />
+                        }))}
+                        {loadingChat && <Spinner ml="auto" display="flex" />}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
