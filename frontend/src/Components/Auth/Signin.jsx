@@ -5,8 +5,8 @@ import {useNavigate} from 'react-router-dom'
 
 const Signin = () => {
     const [show, setShow] = useState(false)
-    const [Email, setEmail] = useState()
-    const [Password, setPassword] = useState()
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
 
     const [loading, setloading] = useState(false)
     const toast = useToast()
@@ -15,7 +15,7 @@ const Signin = () => {
     const handleClick = () => setShow(!show)
     const submitHandler = async () => { 
         setloading(true)
-        if (!Email || !Password) {
+        if (!email || !password) {
             toast({
                 title: "Please Fill All Fields!",
                 status: "error",
@@ -32,7 +32,7 @@ const Signin = () => {
                     "Content-type": "application/json"
                 }
             }
-            const { data } = axios.post("/api/user/login", { Email, Password }, config)
+            const { data } = await axios.post("/api/user/login", { email, password }, config)
             toast({
                 title: "Log In Success!",
                 status: "success",
@@ -63,12 +63,12 @@ const Signin = () => {
         <VStack spacing="5px" color="black">
             <FormControl id='email' isRequired>
                 <FormLabel>Email</FormLabel>
-                <Input placeholder='user@example.com' type="email" value={Email} borderColor="blue.300" onChange={(e) => setEmail(e.target.value)} />
+                <Input placeholder='user@example.com' type="email" value={email} borderColor="blue.300" onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
             <FormControl id='password' isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
-                    <Input type={show ? "text" : "password"} value={Password} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />
+                    <Input type={show ? "text" : "password"} value={password} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={handleClick} textColor="blue.300">
                             {show ? "Hide" : "Show"}

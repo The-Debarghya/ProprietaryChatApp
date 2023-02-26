@@ -11,7 +11,7 @@ const Chats = () => {
     return (
         <div style={{ width: "100%" }}>
             {user && <SideSearch />}
-            <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
+            <Box display="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
                 {user && <AllChats />}
                 {user && <ChatBox  />} 
             </Box>

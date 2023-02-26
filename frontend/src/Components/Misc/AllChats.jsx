@@ -1,7 +1,7 @@
 import { AddIcon } from '@chakra-ui/icons'
 import { Box, Button, Stack, Text, useToast } from '@chakra-ui/react'
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ChatState } from '../../Context/ChatProvider'
 import ChatLoading from './ChatLoading';
 
@@ -43,14 +43,14 @@ const AllChats = () => {
 
   return (
     <Box d={{base: selectedChat ? "none" : "flex", md: "flex"}} flexDir="column" alignItems="center" p={3} bg="white" w={{base: "100%", md: "31%"}} borderRadius="lg" borderWidth="1px">
-      <Box pb={3} px={3} fontSize={{base: "28px", md: "30px"}} fontFamily="Fira sans" d="flex" w="100%" justifyContent="space-between" alignItems="center">
-        All Chats
-        <Button d="flex" fontSize={{base: "17px", md: "10px", lg: "17px"}} rightIcon={<AddIcon/>}>
+      <Box display="flex" alignItems="center" justifyContent="space-between" pb={3} px={3} fontSize={{base: "28px", md: "30px"}} fontFamily="Fira sans" w="100%">
+        <div>All Chats</div>
+        <Button d="flex" fontSize={{base: "17px", md: "10px", lg: "17px"}} rightIcon={<AddIcon/>} color="twitter.100" textColor="black">
           Create New Group
         </Button>
       </Box>
       <Box d="flex" flexDir="column" p={3} bg="twitter.50" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
-        {chats ? (
+        {/*chats ? (
           <Stack overflowY="scroll">
             {chats.map((chat) => {
               <Box onClick={() => setSelectedChat(chat)} cursor="pointer" px={3} py={2} borderRadius="lg" key={chat._id}
@@ -62,7 +62,7 @@ const AllChats = () => {
               </Box>
             })}
           </Stack>
-        ) : (<ChatLoading/>)}
+          ) : (<ChatLoading/>)*/}
       </Box>
     </Box>
   )

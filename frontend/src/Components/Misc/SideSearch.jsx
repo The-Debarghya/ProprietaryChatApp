@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ChatState } from '../../Context/ChatProvider'
 import ChatLoading from './ChatLoading'
 import ProfileModal from './ProfileModal'
+import { MdPersonSearch } from 'react-icons/md'
 
 const SideSearch = () => {
     const [search, setSearch] = useState("")
@@ -88,16 +89,16 @@ const SideSearch = () => {
     }
     return (
         <div>
-            <Box d="flex" justifyContent="space-between" alignItems="center" bg="whatsapp.100" w="100%" p="5px 10px 5px 10px" borderWidth="5px">
+            <Box display="flex" alignItems="center" justifyContent="space-between" bg="twitter.100" w="100%" p="5px 10px 5px 10px" borderWidth="5px">
                 <Tooltip label="Search Users To Chat" hasArrow placement='bottom-end'>
                     <Button variant="ghost" onClick={onOpen}>
-                        <i class="fa-solid fa-user-magnifying-glass"></i>
+                        <MdPersonSearch />
                         <Text d={{ base: "none", md: "flex" }} p="4px">
                             Search Users
                         </Text>
                     </Button>
                 </Tooltip>
-                <Text fontSize="2xl" fontFamily="Fira sans">
+                <Text fontSize="3xl" fontFamily="Fira sans">
                     PropChat
                 </Text>
                 <div>

@@ -5,11 +5,11 @@ import {useNavigate} from 'react-router-dom'
 
 const Signup = () => {
     const [show, setShow] = useState(false)
-    const [Name, setName] = useState()
-    const [Email, setEmail] = useState()
-    const [Password, setPassword] = useState()
+    const [name, setName] = useState()
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
     const [ConfirmPass, setConfirmPass] = useState()
-    const [Pic, setPic] = useState()
+    const [pic, setPic] = useState()
 
     const [loading, setloading] = useState(false)
     const toast = useToast()
@@ -61,7 +61,7 @@ const Signup = () => {
     }
     const submitHandler = async () => {
         setloading(true)
-        if (!Email || !Password || !Name || !ConfirmPass) {
+        if (!email || !password || !name || !ConfirmPass) {
             toast({
                 title: "Please Fill All Fields!",
                 status: "error",
@@ -73,7 +73,7 @@ const Signup = () => {
             return
         }
 
-        if (Password !== ConfirmPass) {
+        if (password !== ConfirmPass) {
             toast({
                 title: "Passwords Don't Match!",
                 status: "error",
@@ -91,7 +91,7 @@ const Signup = () => {
                     "Content-type": "application/json"
                 }
             }
-            const { data } = axios.post("/api/user", { Name, Email, Password, Pic }, config)
+            const { data } = await axios.post("/api/user", { name, email, password, pic }, config)
             toast({
                 title: "Successfully Registered!",
                 status: "success",
@@ -100,6 +100,10 @@ const Signup = () => {
                 position: "top",
             })
            // localStorage.setItem("userInfo", JSON.stringify(data))
+            setEmail("")
+            setName("")
+            setPassword("")
+            setConfirmPass("")
             setloading(false)
             
            // navigate("/chats")
@@ -121,16 +125,16 @@ const Signup = () => {
         <VStack spacing="5px" color="black">
             <FormControl id='user-name' isRequired>
                 <FormLabel>Name</FormLabel>
-                <Input placeholder='Username' value={Name} borderColor="blue.300" onChange={(e) => setName(e.target.value)} />
+                <Input placeholder='Username' value={name} borderColor="blue.300" onChange={(e) => setName(e.target.value)} />
             </FormControl>
             <FormControl id='email' isRequired>
                 <FormLabel>Email</FormLabel>
-                <Input placeholder='user@example.com' value={Email} type="email" pattern=".+@[a-z]+\.com" borderColor="blue.300" onChange={(e) => setEmail(e.target.value)} />
+                <Input placeholder='user@example.com' value={email} type="email" pattern=".+@[a-z]+\.com" borderColor="blue.300" onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
             <FormControl id='password' isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
-                    <Input type={show ? "text" : "password"} value={Password} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />
+                    <Input type={show ? "text" : "password"} value={password} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={handleClick} textColor="blue.300">
                             {show ? "Hide" : "Show"}
