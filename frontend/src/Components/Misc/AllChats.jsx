@@ -4,6 +4,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { ChatState } from '../../Context/ChatProvider'
 import ChatLoading from './ChatLoading';
+import GroupChatModal from './GroupChatModal'
 
 const AllChats = () => {
   const [loggedInUser, setLoggedInUser] = useState() //Local User State
@@ -44,9 +45,11 @@ const AllChats = () => {
     <Box display={{ base: selectedChat ? "none" : "flex", md: "flex" }} flexDir="column" alignItems="center" p={3} bg="white" w={{ base: "100%", md: "31%" }} borderRadius="lg" borderWidth="1px">
       <Box display="flex" alignItems="center" justifyContent="space-between" pb={3} px={3} fontSize={{ base: "28px", md: "30px" }} fontFamily="Fira sans" w="100%">
         <div>All Chats</div>
-        <Button display="flex" fontSize={{ base: "17px", md: "10px", lg: "17px" }} rightIcon={<AddIcon />} color="twitter.100" textColor="black">
-          Create New Group
-        </Button>
+        <GroupChatModal>
+          <Button display="flex" fontSize={{ base: "17px", md: "10px", lg: "17px" }} rightIcon={<AddIcon />} color="twitter.100" textColor="black">
+            Create New Group
+          </Button>
+        </GroupChatModal>
       </Box>
       <Box display="flex" flexDir="column" p={3} bg="twitter.50" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
         {chats ? (

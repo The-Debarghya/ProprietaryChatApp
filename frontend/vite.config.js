@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/user': 'http://localhost:3000',
-      '/api/chat': 'http://localhost:3000'
+      '/api/chat': 'http://localhost:3000',
     }
   },
 })

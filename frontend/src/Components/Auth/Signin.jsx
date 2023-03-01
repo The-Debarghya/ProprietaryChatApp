@@ -1,3 +1,4 @@
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, useToast, VStack } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { useState } from 'react'
@@ -60,7 +61,7 @@ const Signin = () => {
     }
 
     return (
-        <VStack spacing="5px" color="black">
+        <VStack spacing="5px" color="#abb2bf" background="#282c34">
             <FormControl id='email' isRequired>
                 <FormLabel>Email</FormLabel>
                 <Input placeholder='user@example.com' type="email" value={email} borderColor="blue.300" onChange={(e) => setEmail(e.target.value)} />
@@ -70,8 +71,8 @@ const Signin = () => {
                 <InputGroup>
                     <Input type={show ? "text" : "password"} value={password} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />
                     <InputRightElement width="4.5rem">
-                        <Button h="1.75rem" size="sm" onClick={handleClick} textColor="blue.300">
-                            {show ? "Hide" : "Show"}
+                        <Button h="1rem" size="sm" onClick={handleClick} background="#282c34">
+                            {show ? <ViewOffIcon color="#abb2bf" /> : <ViewIcon />}
                         </Button>
                     </InputRightElement>
                 </InputGroup>

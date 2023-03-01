@@ -23,16 +23,16 @@ const Home = () => {
         display="flex"
         justifyContent="center"
         p={3}
-        bg={"white"}
+        bg={"#282c34"}
         w="100%"
         m="40px 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
         textAlign="center">
-        <ChatIcon />
-        <Text fontSize="4xl" fontFamily="Fira Sans" fontWeight="bold">PropChat</Text>
+        <ChatIcon color="#abb2bf" />
+        <Text fontSize="4xl" fontFamily="Fira Sans" fontWeight="bold" color="#abb2bf">PropChat</Text>
       </Box>
-      <Box bg="white" w="100%" p={4} borderRadius="lg" color="black" fontWeight="bold" borderWidth="1px">
+      <Box bg="#282c34" w="100%" p={4} borderRadius="lg" color="#abb2bf" fontWeight="bold" borderWidth="1px">
         <Tabs variant='soft-rounded'>
           <TabList mb="1em">
             <Tab width="50%">Sign In</Tab>

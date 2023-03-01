@@ -1,7 +1,8 @@
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, useToast, VStack } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { useState } from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
     const [show, setShow] = useState(false)
@@ -33,9 +34,10 @@ const Signup = () => {
         if (pic.type === "image/jpeg" || pic.type === "image/png") {
             const data = new FormData()
             data.append("file", pic)
-            data.append("upload_preset", "chat-app")
-            data.append("cloud_name", "dhozgj4ra")
-            fetch("https://api.cloudinary.com/v1_1/dhozgj4ra", {
+            data.append("upload_preset", "tms9flrp")
+            data.append("cloud_name", "dnpuqjmzy")
+            fetch("https://api.cloudinary.com/v1_1/dnpuqjmzy/image/upload", {
+                mode: "cors",
                 method: "post",
                 body: data
             }).then((res) => res.json())
@@ -99,14 +101,14 @@ const Signup = () => {
                 isClosable: true,
                 position: "top",
             })
-           // localStorage.setItem("userInfo", JSON.stringify(data))
+            // localStorage.setItem("userInfo", JSON.stringify(data))
             setEmail("")
             setName("")
             setPassword("")
             setConfirmPass("")
             setloading(false)
-            
-           // navigate("/chats")
+
+            // navigate("/chats")
         } catch (error) {
             toast({
                 title: "Unexpected Error Occurred!",
@@ -122,7 +124,7 @@ const Signup = () => {
     }
 
     return (
-        <VStack spacing="5px" color="black">
+        <VStack spacing="5px" color="#abb2bf">
             <FormControl id='user-name' isRequired>
                 <FormLabel>Name</FormLabel>
                 <Input placeholder='Username' value={name} borderColor="blue.300" onChange={(e) => setName(e.target.value)} />
@@ -136,8 +138,8 @@ const Signup = () => {
                 <InputGroup>
                     <Input type={show ? "text" : "password"} value={password} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />
                     <InputRightElement width="4.5rem">
-                        <Button h="1.75rem" size="sm" onClick={handleClick} textColor="blue.300">
-                            {show ? "Hide" : "Show"}
+                        <Button h="1rem" size="sm" onClick={handleClick} background="#282c34">
+                            {show ? <ViewOffIcon color="#abb2bf" /> : <ViewIcon />}
                         </Button>
                     </InputRightElement>
                 </InputGroup>
@@ -147,8 +149,8 @@ const Signup = () => {
                 <InputGroup>
                     <Input type={show ? "text" : "password"} value={ConfirmPass} borderColor="blue.300" onChange={(e) => setConfirmPass(e.target.value)} />
                     <InputRightElement width="4.5rem">
-                        <Button h="1.75rem" size="sm" onClick={handleClick} textColor="blue.300">
-                            {show ? "Hide" : "Show"}
+                        <Button h="1rem" size="sm" onClick={handleClick} background="#282c34">
+                            {show ? <ViewOffIcon color="#abb2bf" /> : <ViewIcon />}
                         </Button>
                     </InputRightElement>
                 </InputGroup>

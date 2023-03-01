@@ -10,7 +10,7 @@ const UserListItem = ({ user, handleClick }) => {
                 color: "white"
             }}
         >
-            <Avatar mr={2} size="sm" cursor="pointer" src={user.pic} name={user.name} />
+            <Avatar mr={2} size="sm" cursor="pointer" src={user.profilePic} name={user.name} />
             <Box>
                 <Text>{user.name}</Text>
                 <Text fontSize="xs"><b>Email: </b>{user.email}</Text>

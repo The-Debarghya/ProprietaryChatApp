@@ -3,9 +3,10 @@ import { Request, Response } from "express";
 import { User } from "../models/userModel.js";
 import generateToken from "../config/generateToken.js";
 
+const defaultProfilePic: string = "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
+
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const { name, email, password, pic } = req.body
-
     if (!name || !email || !password) {
         res.status(400);
         throw new Error("Missing Fields!")
@@ -18,7 +19,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
         throw new Error("Email already exists!")
     }
 
-    const user = await User.create({ name, email, password, pic })
+    const user = await User.create({ name: name, email: email, password: password, profilePic: pic || defaultProfilePic })
 
     if (user) {
         res.status(201).json({

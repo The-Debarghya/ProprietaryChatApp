@@ -13,7 +13,7 @@ const userSchema = new Schema<UserIface>({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
-    profilePic: { type: String, default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }
+    profilePic: { type: String, required: true }
 }, {timestamps: true})
 
 userSchema.methods.validatePassword = async function(password: string): Promise<boolean> {

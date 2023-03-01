@@ -17,7 +17,7 @@ const accessChat = asyncHandler(async (req: Request, res: Response) => {
             { users: { $elemMatch: { $eq: userId } } },
         ],
 
-    }).populate("users", "-password").populate("latestMsg")
+    }).populate("users").populate("latestMsg")
 
     eachChat = await User.populate(eachChat, {
         "path": "latestMsg.sender",
@@ -35,7 +35,7 @@ const accessChat = asyncHandler(async (req: Request, res: Response) => {
         try {
             const createdChat = await Chat.create(chatData)
 
-            const allChats = await Chat.findOne({ _id: createdChat._id }).populate("users", "-password")
+            const allChats = await Chat.findOne({ _id: createdChat._id }).populate("users")
             res.status(200).send(allChats)
         }
         catch (error) {
@@ -48,7 +48,7 @@ const accessChat = asyncHandler(async (req: Request, res: Response) => {
 const fetchAllChats = asyncHandler(async (req: Request, res: Response) => {
     try {
         Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
-            .populate("users", "-password").populate("groupAdmin", "-password").populate("latestMsg")
+            .populate("users").populate("groupAdmin").populate("latestMsg")
             .sort({ updatedAt: -1 })
             .then(async (results: any) => {
                 results = await User.populate(results, {
@@ -83,7 +83,7 @@ const createGrpChat = asyncHandler(async (req: Request, res: Response): Promise<
             groupAdmin: req.user,
         })
 
-        const fullGrpChat = await Chat.findOne({ _id: grpChat._id }).populate("users", "-password").populate("groupAdmin", "-password")
+        const fullGrpChat = await Chat.findOne({ _id: grpChat._id }).populate("users").populate("groupAdmin")
 
         res.status(200).json(fullGrpChat)
     } catch (error) {
