@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
     const [show, setShow] = useState(false)
+    const [showCnf, setShowCnf] = useState(false)
     const [name, setName] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
@@ -17,6 +18,7 @@ const Signup = () => {
     const navigate = useNavigate()
 
     const handleClick = () => setShow(!show)
+    const handleClick2 = () => setShowCnf(!showCnf)
     const postDetails = (pic) => {
         setloading(true)
         if (pic === undefined) {
@@ -147,17 +149,17 @@ const Signup = () => {
             <FormControl id='cnf-password' isRequired>
                 <FormLabel>Confirm Password</FormLabel>
                 <InputGroup>
-                    <Input type={show ? "text" : "password"} value={ConfirmPass} borderColor="blue.300" onChange={(e) => setConfirmPass(e.target.value)} />
+                    <Input type={showCnf ? "text" : "password"} value={ConfirmPass} borderColor="blue.300" onChange={(e) => setConfirmPass(e.target.value)} />
                     <InputRightElement width="4.5rem">
-                        <Button h="1rem" size="sm" onClick={handleClick} background="#282c34">
-                            {show ? <ViewOffIcon color="#abb2bf" /> : <ViewIcon />}
+                        <Button h="1rem" size="sm" onClick={handleClick2} background="#282c34">
+                            {showCnf ? <ViewOffIcon color="#abb2bf" /> : <ViewIcon />}
                         </Button>
                     </InputRightElement>
                 </InputGroup>
             </FormControl>
             <FormControl id="pic">
                 <FormLabel>Upload Your Profile Photo</FormLabel>
-                <Input type="file" borderColor="blue.300" p={1.5} accept="image/*" onChange={(e) => postDetails(e.target.files[0])} />
+                <Input type="file" borderColor="blue.300" paddingLeft='5px' paddingTop='4px' accept="image/*" onChange={(e) => postDetails(e.target.files[0])} />
             </FormControl>
             <Button width="100%" colorScheme="linkedin" style={{ marginTop: 20 }} onClick={submitHandler} isLoading={loading}>
                 Sign Up

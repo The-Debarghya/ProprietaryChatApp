@@ -25,16 +25,16 @@ const Home = () => {
         p={3}
         bg={"#282c34"}
         w="100%"
-        m="40px 0 15px 0"
+        m="10px 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
         textAlign="center">
         <ChatIcon color="#abb2bf" />
         <Text fontSize="4xl" fontFamily="Fira Sans" fontWeight="bold" color="#abb2bf">PropChat</Text>
       </Box>
-      <Box bg="#282c34" w="100%" p={4} borderRadius="lg" color="#abb2bf" fontWeight="bold" borderWidth="1px">
+      <Box bg="#282c34" w="100%" p={4} borderRadius="lg" color="#abb2bf" fontWeight="bold" borderWidth="0.5px">
         <Tabs variant='soft-rounded'>
-          <TabList mb="1em">
+          <TabList mb="2px">
             <Tab width="50%">Sign In</Tab>
             <Tab width="50%">Sign Up</Tab>
           </TabList>

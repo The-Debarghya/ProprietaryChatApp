@@ -1,4 +1,4 @@
-import { Button, FormControl, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, useDisclosure, useToast } from '@chakra-ui/react'
+import { Box, Button, FormControl, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, useDisclosure, useToast } from '@chakra-ui/react'
 import axios from 'axios';
 import React, { useState } from 'react'
 import { ChatState } from '../../Context/ChatProvider';
@@ -59,6 +59,10 @@ const GroupChatModal = ({ children }) => {
         setSelectedUsers([...selectedUsers, member])
     }
 
+    const handleDelete = (tempUser) => {
+        setSelectedUsers(selectedUsers.filter((selUser) => selUser._id !== tempUser._id))
+    }
+
     return (
         <div>
             <span onClick={onOpen}>{children}</span>
@@ -76,6 +80,11 @@ const GroupChatModal = ({ children }) => {
                         <FormControl>
                             <Input placeholder='Add Users(At least 2)' mb={1} onChange={(e) => handleSearch(e.target.value)} />
                         </FormControl>
+                        <Box w="100%" display="flex" flexWrap="wrap">
+                        {selectedUsers?.map((u) => {
+                            return (<UserBadgeItem key={u._id} user={u} handleFunction={() => handleDelete(u)} />)
+                        })}
+                        </Box>
                         {loading ? (<Spinner size="xs" />): (searchResults?.slice(0,4).map((user) => {
                             return (<UserListItem key={user._id} user={user} handleClick={() => handleGroup(user)} />)
                         }))}
