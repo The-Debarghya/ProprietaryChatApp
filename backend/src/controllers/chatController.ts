@@ -96,7 +96,7 @@ const createGrpChat = asyncHandler(async (req: Request, res: Response): Promise<
 const renameGrp = asyncHandler(async (req: Request, res: Response) => {
     const { chatId, chatName } = req.body
     const newChatName = await Chat.findByIdAndUpdate(chatId, { chatName: chatName }, { new: true })
-        .populate("users", "-password").populate("groupAdmin", "-password")
+        .populate("users").populate("groupAdmin")
 
     if (!newChatName) {
         res.status(404)
@@ -109,7 +109,7 @@ const renameGrp = asyncHandler(async (req: Request, res: Response) => {
 const addToGrp = asyncHandler(async (req: Request, res: Response) => {
     const { chatId, userId } = req.body
     const addedGrp = await Chat.findByIdAndUpdate(chatId, { $push: { users: userId } }, { new: true })
-        .populate("users", "-password").populate("groupAdmin", "-password")
+        .populate("users").populate("groupAdmin")
 
     if (!addedGrp) {
         res.status(404)
@@ -122,7 +122,7 @@ const addToGrp = asyncHandler(async (req: Request, res: Response) => {
 const removeFromGrp = asyncHandler(async (req: Request, res: Response) => {
     const { chatId, userId } = req.body
     const removedGrp = await Chat.findByIdAndUpdate(chatId, { $pull: { users: userId } }, { new: true })
-        .populate("users", "-password").populate("groupAdmin", "-password")
+        .populate("users").populate("groupAdmin")
 
     if (!removedGrp) {
         res.status(404)

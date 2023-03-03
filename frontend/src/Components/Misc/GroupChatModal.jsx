@@ -41,8 +41,47 @@ const GroupChatModal = ({ children }) => {
             })
         }
     }
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (!groupChatName || !selectedUsers) {
+            toast({
+                title: "Please Specify All Fields!",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+            })
+        }
 
+        try {
+            const headers = {
+                headers: {
+                    Authorization: `Bearer ${user.token}`
+                }
+            }
+            
+            const {data} = await axios.post('/api/chat/group', {
+                name: groupChatName,
+                users: JSON.stringify(selectedUsers.map(u => u._id))
+            }, headers)
+            setChats([data, ...chats])
+            onClose()
+            toast({
+                title: "Created New Group Chat!",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+            })
+        } catch (error) {
+            toast({
+                title: "Unexpected Error Occurred!",
+                description: error.response.data,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+            })
+        }
     }
 
     const handleGroup = (member) => {

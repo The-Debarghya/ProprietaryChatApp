@@ -6,7 +6,7 @@ import { ChatState } from '../../Context/ChatProvider'
 import ChatLoading from './ChatLoading';
 import GroupChatModal from './GroupChatModal'
 
-const AllChats = () => {
+const AllChats = ({fetchAgain}) => {
   const [loggedInUser, setLoggedInUser] = useState() //Local User State
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState()
   const toast = useToast()
@@ -35,7 +35,7 @@ const AllChats = () => {
   useEffect(() => {
     setLoggedInUser(JSON.parse(localStorage.getItem("userInfo")))
     fetchChats()
-  }, [])
+  }, [fetchAgain])
 
   const getSender = (loggedUser, users) => {
     return users[0]._id === loggedUser._id ? users[1].name : users[0].name

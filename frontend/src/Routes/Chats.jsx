@@ -8,12 +8,14 @@ import { ChatState } from '../Context/ChatProvider'
 
 const Chats = () => {
     const { user } = ChatState();
+    const [fetchAgain, setFetchAgain] = useState(false)
+
     return (
         <div style={{ width: "100%" }}>
             {user && <SideSearch />}
             <Box display="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-                {user && <AllChats />}
-                {user && <ChatBox  />} 
+                {user && <AllChats fetchAgain={fetchAgain} />}
+                {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />} 
             </Box>
         </div>
     )
