@@ -61,6 +61,14 @@ const AllChats = ({fetchAgain}) => {
                 <Text>
                   {!chat.isGroupChat ? (getSender(loggedInUser, chat.users)) : (chat.chatName)}
                 </Text>
+                {chat.latestMsg && (
+                  <Text fontSize="xs">
+                    <b>{chat.latestMsg.sender.name}: </b>
+                    {chat.latestMsg.content.length > 50
+                      ? chat.latestMsg.content.substring(0, 51) + "..."
+                      : chat.latestMsg.content}
+                  </Text>
+                )}
               </Box>)
             })}
           </Stack>

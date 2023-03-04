@@ -42,7 +42,7 @@ const GroupChatModal = ({ children }) => {
         }
     }
     const handleSubmit = async () => {
-        if (!groupChatName || !selectedUsers) {
+        if (!groupChatName || !selectedUsers.length) {
             toast({
                 title: "Please Specify All Fields!",
                 status: "error",

@@ -8,6 +8,8 @@ import ChatLoading from './ChatLoading'
 import ProfileModal from './ProfileModal'
 import UserListItem from '../User/UserListItem'
 import { MdPersonSearch } from 'react-icons/md'
+import { getSender } from '../../config/ChatLomgic'
+import { Badge } from '@mui/material'
 
 const SideSearch = () => {
     const [search, setSearch] = useState("")
@@ -15,7 +17,7 @@ const SideSearch = () => {
     const [loading, setLoading] = useState(false)
     const [loadingChat, setLoadingChat] = useState(false)
 
-    const { user, setSelectedChat, chats, setChats } = ChatState()
+    const { user, setSelectedChat, chats, setChats, notification, setNotification } = ChatState()
     const navigate = useNavigate()
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -39,7 +41,7 @@ const SideSearch = () => {
                     Authorization: `Bearer ${user.token}`
                 }
             }
-            const {data} = await axios.get(`/api/user?search=${search}`, headers)
+            const { data } = await axios.get(`/api/user?search=${search}`, headers)
             setLoading(false)
             setSearchResults(data)
         } catch (error) {
@@ -104,8 +106,21 @@ const SideSearch = () => {
                 <div>
                     <Menu>
                         <MenuButton p={1}>
-                            <BellIcon fontSize="2xl" m={1} />
+                            <Badge badgeContent={notification.length} color="error" max={9}>
+                                <BellIcon fontSize="2xl" m={1} />
+                            </Badge>
                         </MenuButton>
+                        <MenuList pl={3}>
+                            {!notification.length && "No New Messages"}
+                            {notification.map((notif) => {
+                                return (<MenuItem key={notif._id} onClick={() => {
+                                    setSelectedChat(notif.chat);
+                                    setNotification(notification.filter((n) => n !== notif))
+                                }}>
+                                    {notif.chat.isGroupChat ? `New Messages in ${notif.chat.chatName}` : `New Message from ${getSender(user, notif.chat.users)}`}
+                                </MenuItem>)
+                            })}
+                        </MenuList>
                     </Menu>
                     <Menu>
                         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>

@@ -47,7 +47,7 @@ const accessChat = asyncHandler(async (req: Request, res: Response) => {
 
 const fetchAllChats = asyncHandler(async (req: Request, res: Response) => {
     try {
-        Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+        Chat.find({ users: { $elemMatch: { $eq: req.user._id } }, latestMsg: {$ne: null} })
             .populate("users").populate("groupAdmin").populate("latestMsg")
             .sort({ updatedAt: -1 })
             .then(async (results: any) => {

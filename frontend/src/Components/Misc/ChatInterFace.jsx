@@ -8,12 +8,13 @@ import UpdateModal from './UpdateModal'
 import axios from 'axios'
 import io from 'socket.io-client'
 import ScrollableChat from './ScrollableChat'
+import { BeatLoader } from 'react-spinners'
 
 const ENDPOINT = "http://localhost:5000"
 var socket, selectedChatCompare;
 
 const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
-    const { user, selectedChat, setSelectedChat } = ChatState()
+    const { user, selectedChat, setSelectedChat, notification, setNotification } = ChatState()
     const [messages, setMessages] = useState([])
     const [loading, setloading] = useState(false)
     const [newMessage, setNewMessage] = useState()
@@ -68,7 +69,10 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
         socket.on("message received", (newMessageReceived) => {
             if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
                 //Not the active chat so give a notification.
-
+                if (!notification.includes(newMessageReceived)) {
+                    setNotification([newMessageReceived, ...notification])
+                    setFetchAgain(!fetchAgain)
+                }
             } else {
                 setMessages([...messages, newMessageReceived])
             }
