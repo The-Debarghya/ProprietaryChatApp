@@ -1,3 +1,4 @@
+//Set the left margin if the sender is same
 export const isSameSenderMargin = (messages, m, i, userId) => {
 
     if (
@@ -25,6 +26,7 @@ export const isSameSender = (messages, m, i, userId) => {
     );
 };
 
+//check for last sent messageby the same user (for adding the avatar)
 export const isLastMessage = (messages, i, userId) => {
     return (
         i === messages.length - 1 &&
@@ -33,14 +35,17 @@ export const isLastMessage = (messages, i, userId) => {
     );
 };
 
+//check for consecutive messages to set top margin 
 export const isSameUser = (messages, m, i) => {
     return i > 0 && messages[i - 1].sender._id === m.sender._id;
 };
 
+//get the peer name for one-on-one chat
 export const getSender = (loggedUser, users) => {
     return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
 };
 
+//get the peer object for one-on-one chat
 export const getSenderObj = (loggedUser, users) => {
     return users[0]._id === loggedUser._id ? users[1] : users[0];
 };

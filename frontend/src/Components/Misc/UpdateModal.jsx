@@ -6,7 +6,7 @@ import { ChatState } from '../../Context/ChatProvider'
 import UserBadgeItem from '../User/UserBadgeItem'
 import UserListItem from '../User/UserListItem'
 
-const UpdateModal = ({ fetchAgain, setFetchAgain }) => {
+const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { user, selectedChat, setSelectedChat } = ChatState()
 
@@ -94,7 +94,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain }) => {
 
             userToRemove._id === user._id ? setSelectedChat() : setSelectedChat(data);
             setFetchAgain(!fetchAgain);
-            //fetchMessages();
+            fetchMessages();
             setloading(false);
         } catch (error) {
             toast({

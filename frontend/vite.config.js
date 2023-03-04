@@ -8,6 +8,7 @@ export default defineConfig({
     proxy: {
       '/api/user': 'http://localhost:3000',
       '/api/chat': 'http://localhost:3000',
+      '/api/message': 'http://localhost:3000'
     }
   },
 })
