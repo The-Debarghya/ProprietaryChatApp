@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import {Server, Socket} from "socket.io";
 import express from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
@@ -24,6 +24,51 @@ app.use('/api/message', messageRoutes);
 app.use(notFound)
 app.use(errorHandler)
 
-app.listen(port, (): void => {
+const server = app.listen(port, (): void => {
     console.log(`Server is up and running at ::${port}`)
+})
+
+const io = new Server(server, {
+    pingTimeout: 60000,
+    cors: {
+        origin: "http://localhost:3000",
+    }
+})
+
+io.on("connection", (socket: Socket) => {
+    console.log("Connected to Socket.io Successfully!")
+
+    socket.on('setup', (userData) => {
+        socket.join(userData._id)
+        socket.emit("connected")
+    })
+
+    socket.on("join chat", (room) => {
+        socket.join(room)
+        console.log(`User Joined Room: ${room}`)
+    })
+
+    socket.on("typing", (room) => socket.in(room).emit("typing"))
+    socket.on("stop typing", (room) => socket.in(room).emit("stop typing"))
+
+    socket.on('new message', (receivedNewMessage) => {
+        var chat = receivedNewMessage.chat
+
+        if (!chat.users) {
+            console.log("Chat.users is not defined!")
+            return
+        }
+
+        chat.users.forEach((user:any) => {
+            if (user._id == receivedNewMessage.sender._id) {
+                return
+            }
+            socket.in(user._id).emit("message received", receivedNewMessage)
+        })
+    })
+
+    socket.off("setup", (userData) => {
+        console.log("User Disconnected!")
+        socket.leave(userData._id)
+    })
 })

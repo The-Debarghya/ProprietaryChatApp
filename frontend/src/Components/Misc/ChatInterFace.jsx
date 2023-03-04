@@ -6,13 +6,20 @@ import { getSender, getSenderObj } from "../../config/ChatLomgic"
 import ProfileModal from './ProfileModal'
 import UpdateModal from './UpdateModal'
 import axios from 'axios'
+import io from 'socket.io-client'
 import ScrollableChat from './ScrollableChat'
+
+const ENDPOINT = "http://localhost:5000"
+var socket, selectedChatCompare;
 
 const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
     const { user, selectedChat, setSelectedChat } = ChatState()
     const [messages, setMessages] = useState([])
     const [loading, setloading] = useState(false)
     const [newMessage, setNewMessage] = useState()
+    const [socketConnected, setSocketConnected] = useState(false)
+    const [typing, setTyping] = useState(false)
+    const [isTyping, setIsTyping] = useState(false)
 
     const toast = useToast()
 
@@ -30,6 +37,8 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
             const { data } = await axios.get(`/api/message/${selectedChat._id}`, headers)
             setMessages(data)
             setloading(false)
+
+            socket.emit('join chat', selectedChat._id)
         } catch (error) {
             toast({
                 title: "Unexpected Error Occurred!",
@@ -43,12 +52,32 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
     }
 
     useEffect(() => {
+        socket = io(ENDPOINT)
+        socket.emit("setup", user)
+        socket.on("connected", () => setSocketConnected(true))
+        socket.on("typing", () => setIsTyping(true))
+        socket.on("stop typing", () => setIsTyping(false))
+    }, [])
+
+    useEffect(() => {
         fetchMessages()
+        selectedChatCompare = selectedChat
     }, [selectedChat])
 
+    useEffect(() => {
+        socket.on("message received", (newMessageReceived) => {
+            if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
+                //Not the active chat so give a notification.
+
+            } else {
+                setMessages([...messages, newMessageReceived])
+            }
+        })
+    })
 
     const sendMessage = async (event) => {
         if (event.key === "Enter" && newMessage) {
+            socket.emit('stop typing', selectedChat._id)
             try {
                 const headers = {
                     headers: {
@@ -61,6 +90,8 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                     content: newMessage,
                     chatId: selectedChat._id
                 }, headers)
+
+                socket.emit('new message', data)
                 setMessages([...messages, data])
             } catch (error) {
                 toast({
@@ -74,8 +105,28 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
             }
         }
     }
+
     const typingHandler = (event) => {
         setNewMessage(event.target.value)
+        if (!socketConnected) {
+            return
+        }
+
+        if (!typing) {
+            setTyping(true)
+            socket.emit("typing", selectedChat._id)
+        }
+        let lastTypingTime = new Date().getTime()
+        var timeOut = 3000
+        setTimeout(() => {
+            var timeNow = new Date().getTime()
+            var diff = timeNow - lastTypingTime
+            if (diff >= timeOut && typing) {
+                socket.emit("stop typing", selectedChat._id)
+                setTyping(false)
+            }
+
+        }, timeOut)
     }
 
     return (
@@ -96,11 +147,15 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                     p={3} w="100%" h="100%" borderRadius="lg" overflowY="hidden" background="#E8E8E8"
                 >
                     {loading ? (<Spinner size="xl" w={20} h={20} alignSelf="center" margin="auto" />) : (
-                        <div key="ab556d4323fcb" className='messages' style={{ display: "flex", flexDirection: "column", overflowY: "scroll", scrollbarWidth: "none"}}>
+                        <div key="ab556d4323fcb" className='messages' style={{ display: "flex", flexDirection: "column", overflowY: "scroll", scrollbarWidth: "none" }}>
                             <ScrollableChat messages={messages} />
                         </div>
                     )}
                     <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+                        {isTyping ? (<div style={{ display: "flex", alignItems: "left" }}>
+                            <Text fontStyle="italic" color="gray">{`${getSender(user, selectedChat.users)} is typing`}</Text>
+                            <BeatLoader size={5} color='gray' width={70} style={{ marginBottom: 15, marginLeft: 6 }} />
+                        </div>) : <></>}
                         <Input placeholder='Type a message' variant="filled" bg="#E0E0E0" onChange={typingHandler} value={newMessage} />
                     </FormControl>
                 </Box>
