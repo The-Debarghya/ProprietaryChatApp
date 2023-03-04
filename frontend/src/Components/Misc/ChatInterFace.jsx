@@ -15,7 +15,7 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                     {!selectedChat.isGroupChat ? (<>{getSender(user, selectedChat.users)}
                         <ProfileModal user={getSenderObj(user, selectedChat.users)} />
                     </>) : (
-                        <div>{selectedChat.chatName.toUpperCase()}</div>
+                        <div>{selectedChat.chatName}</div>
                     )}
                 </Text>
                 <Box display="flex" flexDir="column" justifyContent="flex-end"

@@ -75,7 +75,7 @@ const SideSearch = () => {
         } catch (error) {
             toast({
                 title: "Unexpected Error Occurred!",
-                description: error.message,
+                description: error.response.data.message,
                 status: "error",
                 duration: 5000,
                 isClosable: true,
