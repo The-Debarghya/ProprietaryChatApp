@@ -6,6 +6,7 @@ import * as dotenv from "dotenv";
 import connectDb from "./config/database.js";
 import usrRoutes from "./routes/usrRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js"
+import messageRoutes from "./routes/messageRoutes.js"
 import { errorHandler, notFound } from "./middlewares/errorHandlers.js";
 dotenv.config();
 connectDb()
@@ -18,6 +19,7 @@ app.use(express.json())
 
 app.use('/api/user', usrRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/message', messageRoutes);
 
 app.use(notFound)
 app.use(errorHandler)

@@ -94,7 +94,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain }) => {
 
             userToRemove._id === user._id ? setSelectedChat() : setSelectedChat(data);
             setFetchAgain(!fetchAgain);
-            fetchMessages();
+            //fetchMessages();
             setloading(false);
         } catch (error) {
             toast({

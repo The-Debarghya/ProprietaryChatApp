@@ -1,6 +1,6 @@
-import { model, Schema } from "mongoose";
+import { Document, model, Schema } from "mongoose";
 
-interface MessageIface{
+export interface MessageIface extends Document{
     sender: Schema.Types.ObjectId,
     content: string,
     chat: Schema.Types.ObjectId
@@ -12,6 +12,4 @@ const messageSchema = new Schema<MessageIface>({
     chat: { type: Schema.Types.ObjectId, ref: "Chat" }
 }, { timestamps: true })
 
-const Message = model<MessageIface>("Message", messageSchema)
-
-export default Message
+export const Message = model<MessageIface>("Message", messageSchema)

@@ -4,6 +4,7 @@ import React from 'react'
 import { ChatState } from '../../Context/ChatProvider'
 import { getSender, getSenderObj } from "../../config/ChatLomgic"
 import ProfileModal from './ProfileModal'
+import UpdateModal from './UpdateModal'
 
 const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
     const { user, selectedChat, setSelectedChat } = ChatState()
@@ -15,7 +16,10 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                     {!selectedChat.isGroupChat ? (<>{getSender(user, selectedChat.users)}
                         <ProfileModal user={getSenderObj(user, selectedChat.users)} />
                     </>) : (
-                        <div>{selectedChat.chatName}</div>
+                        <div>
+                            {selectedChat.chatName}
+                            <UpdateModal fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+                        </div>
                     )}
                 </Text>
                 <Box display="flex" flexDir="column" justifyContent="flex-end"
