@@ -1,3 +1,7 @@
+/**
+ * @author @The-Debarghya
+ * @license AGPL
+ */
 import {Server, Socket} from "socket.io";
 import express from "express";
 import cors from "cors";
@@ -65,6 +69,10 @@ io.on("connection", (socket: Socket) => {
             }
             socket.in(user._id).emit("message received", receivedNewMessage)
         })
+    })
+
+    socket.on("disconnect", () => {
+        console.log("User gone offline!")
     })
 
     socket.off("setup", (userData) => {

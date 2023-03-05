@@ -4,7 +4,7 @@ import { ChatState } from '../../Context/ChatProvider'
 
 const UserListItem = ({ user, handleClick }) => {
     return (
-        <Box onClick={handleClick} cursor="pointer" bg="cyan.50" w="100%" display="flex" alignItems="center" color="black" px={3} py={2} mb={2} borderRadius="lg"
+        <Box onClick={handleClick} cursor="pointer" color="#abb2bf" bg="#282c34" w="100%" display="flex" alignItems="center" px={3} py={2} mb={2} borderRadius="lg"
             _hover={{
                 background: "#0BC5EA",
                 color: "white"

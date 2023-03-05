@@ -9,6 +9,7 @@ import axios from 'axios'
 import io from 'socket.io-client'
 import ScrollableChat from './ScrollableChat'
 import { BeatLoader } from 'react-spinners'
+import { MdSend } from 'react-icons/md'
 
 const ENDPOINT = "http://localhost:3000"
 var socket, selectedChatCompare;
@@ -110,6 +111,35 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
         }
     }
 
+    const handleSend = async () => {
+        socket.emit('stop typing', selectedChat._id)
+            try {
+                const headers = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${user.token}`
+                    }
+                }
+                setNewMessage("")
+                const { data } = await axios.post('/api/message', {
+                    content: newMessage,
+                    chatId: selectedChat._id
+                }, headers)
+
+                socket.emit('new message', data)
+                setMessages([...messages, data])
+            } catch (error) {
+                toast({
+                    title: "Unexpected Error Occurred!",
+                    description: "Error occurred while sending message",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top",
+                })
+            }
+    }
+
     const typingHandler = (event) => {
         setNewMessage(event.target.value)
         if (!socketConnected) {
@@ -148,7 +178,7 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                     )}
                 </Text>
                 <Box display="flex" flexDir="column" justifyContent="flex-end"
-                    p={3} w="100%" h="100%" borderRadius="lg" overflowY="hidden" background="#E8E8E8"
+                    p={3} w="100%" h="100%" borderRadius="lg" overflowY="hidden" bg="#373b45"
                 >
                     {loading ? (<Spinner size="xl" w={20} h={20} alignSelf="center" margin="auto" />) : (
                         <div key="ab556d4323fcb" className='messages' style={{ display: "flex", flexDirection: "column", overflowY: "scroll", scrollbarWidth: "none" }}>
@@ -157,10 +187,14 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                     )}
                     <FormControl onKeyDown={sendMessage} isRequired mt={3}>
                         {isTyping ? (<div style={{ display: "flex", alignItems: "left" }}>
-                            <Text fontStyle="italic" color="gray">{`${getSender(user, selectedChat.users)} is typing`}</Text>
-                            <BeatLoader size={5} color='gray' width={70} style={{ marginBottom: 15, marginLeft: 6 }} />
+                            <Text fontStyle="italic" color="white">{`${getSender(user, selectedChat.users)} is typing`}</Text>
+                            <BeatLoader size={5} color='white' width={70} style={{ marginBottom: 15, marginLeft: 6 }} />
                         </div>) : <></>}
-                        <Input placeholder='Type a message' variant="filled" bg="#E0E0E0" onChange={typingHandler} value={newMessage} />
+                        <Box display="flex" flexDir="row" justifyContent="space-evenly">
+
+                            <Input placeholder='Type a message' variant="filled" bg="#E0E0E0" onChange={typingHandler} value={newMessage} />
+                            <IconButton icon={<MdSend />} color="#abb2bf" bg="green.500" onClick={handleSend} />
+                        </Box>
                     </FormControl>
                 </Box>
             </>) : (

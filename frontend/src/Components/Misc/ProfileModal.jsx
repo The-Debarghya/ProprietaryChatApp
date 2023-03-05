@@ -10,7 +10,7 @@ const ProfileModal = ({ user, children }) => {
             {children ? (<span onClick={onOpen}>{children}</span>) : (<IconButton display={{ base: "flex" }} onClick={onOpen} icon={<ViewIcon />} />)}
             <Modal size="lg" isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
-                <ModalContent h="400px">
+                <ModalContent h="400px" color="#abb2bf" bg="#282c34">
                     <ModalHeader fontSize="40px" fontFamily="Fira sans" display="flex" justifyContent="center">
                         {user.name}
                     </ModalHeader>

@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons'
-import { Box, Button, Stack, Text, useToast } from '@chakra-ui/react'
+import { Avatar, Box, Button, Stack, Text, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { ChatState } from '../../Context/ChatProvider'
@@ -42,22 +42,23 @@ const AllChats = ({fetchAgain}) => {
   }
 
   return (
-    <Box display={{ base: selectedChat ? "none" : "flex", md: "flex" }} flexDir="column" alignItems="center" p={3} bg="white" w={{ base: "100%", md: "31%" }} borderRadius="lg" borderWidth="1px">
+    <Box display={{ base: selectedChat ? "none" : "flex", md: "flex" }} flexDir="column" alignItems="center" p={3} color="#abb2bf" bg="#282c34" w={{ base: "100%", md: "31%" }} borderRadius="lg" borderWidth="1px">
       <Box display="flex" alignItems="center" justifyContent="space-between" pb={3} px={3} fontSize={{ base: "28px", md: "30px" }} fontFamily="Fira sans" w="100%">
         <div>All Chats</div>
         <GroupChatModal>
-          <Button display="flex" fontSize={{ base: "17px", md: "10px", lg: "17px" }} rightIcon={<AddIcon />} color="twitter.100" textColor="black">
+          <Button display="flex" fontSize={{ base: "17px", md: "10px", lg: "17px" }} rightIcon={<AddIcon />} bg="green.700" textColor="#abb2bf">
             Create New Group
           </Button>
         </GroupChatModal>
       </Box>
-      <Box display="flex" flexDir="column" p={3} bg="twitter.50" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
+      <Box display="flex" flexDir="column" p={3} color="#abb2bf" bg="#373b45" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
         {chats ? (
           <Stack overflowY="scroll">
             {chats.map((chat) => {
               return (<Box onClick={() => setSelectedChat(chat)} cursor="pointer" px={3} py={2} borderRadius="lg" key={chat._id}
-                bg={selectedChat === chat ? "cyan.400" : "cyan.50"} color={selectedChat === chat ? "white" : "black"}
+                bg={selectedChat === chat ? "#56b6c2" : "#5c6370"} color={selectedChat === chat ? "white" : "#abb2bf"}
               >
+                {!chat.isGroupChat ? (<Avatar src={chat.users[0].profilePic} />) : (<Avatar alt={chat.chatName} src="https://lh3.googleusercontent.com/ABlX4ekWIQimPjZ1HlsMLYXibPo2xiWnZ2iny1clXQm2IQTcU2RG0-4S1srWsBQmGAo"/>)}
                 <Text>
                   {!chat.isGroupChat ? (getSender(loggedInUser, chat.users)) : (chat.chatName)}
                 </Text>

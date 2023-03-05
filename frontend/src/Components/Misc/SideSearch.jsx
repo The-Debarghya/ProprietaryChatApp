@@ -1,4 +1,4 @@
-import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import { BellIcon, ChatIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { useState } from 'react'
@@ -7,12 +7,18 @@ import { ChatState } from '../../Context/ChatProvider'
 import ChatLoading from './ChatLoading'
 import ProfileModal from './ProfileModal'
 import UserListItem from '../User/UserListItem'
-import { MdPersonSearch } from 'react-icons/md'
+import { MdLogout, MdOutlineInfo, MdPersonSearch } from 'react-icons/md'
 import { getSender } from '../../config/ChatLomgic'
-//import { StyledEngineProvider } from '@mui/material/styles';
-//import Badge from '@mui/material/Badge'
+import { StyledEngineProvider, createTheme, ThemeProvider } from '@mui/material/styles';
+import Badge from '@mui/material/Badge'
 
 const SideSearch = () => {
+    const theme = createTheme({
+        typography: {
+            fontFamily: "Fira sans, sans-serif"
+        },
+    });
+
     const [search, setSearch] = useState("")
     const [searchResults, setSearchResults] = useState([])
     const [loading, setLoading] = useState(false)
@@ -92,7 +98,7 @@ const SideSearch = () => {
     }
     return (
         <div>
-            <Box display="flex" alignItems="center" justifyContent="space-between" bg="twitter.100" w="100%" p="5px 10px 5px 10px" borderWidth="5px">
+            <Box display="flex" alignItems="center" justifyContent="space-between" color="#abb2bf" bg="#282c34" borderColor="#282c34" w="100%" p="5px 10px 5px 10px" borderWidth="5px">
                 <Tooltip label="Search Users To Chat" hasArrow placement='bottom-end'>
                     <Button variant="ghost" onClick={onOpen}>
                         <MdPersonSearch />
@@ -101,19 +107,22 @@ const SideSearch = () => {
                         </Text>
                     </Button>
                 </Tooltip>
-                <Text fontSize="3xl" fontFamily="Fira sans">
+                <Text fontSize="4xl" fontFamily="Fira sans" fontStyle="bold">
+                <ChatIcon color="#abb2bf" boxSize="9" pb={5} />
                     PropChat
                 </Text>
                 <div>
                     <Menu>
                         <MenuButton p={1}>
-                            {/*<StyledEngineProvider injectFirst>
-                                <Badge badgeContent={notification.length} color="error" max={9}>
-                                    <BellIcon fontSize="2xl" m={1} />
-                                </Badge>
-    </StyledEngineProvider>*/}
+                            <ThemeProvider theme={theme}>
+                                <StyledEngineProvider injectFirst>
+                                    <Badge badgeContent={notification.length} color="primary" max={9}>
+                                        <BellIcon fontSize="lg" m={8} />
+                                    </Badge>
+                                </StyledEngineProvider>
+                            </ThemeProvider>
                         </MenuButton>
-                        <MenuList pl={3}>
+                        <MenuList pl={3} color="white" bg="#6e6e80">
                             {!notification.length && "No New Messages"}
                             {notification.map((notif) => {
                                 return (<MenuItem key={notif._id} onClick={() => {
@@ -129,29 +138,35 @@ const SideSearch = () => {
                         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                             <Avatar size="sm" cursor="pointer" name={user.name} src={user.pic} />
                         </MenuButton>
-                        <MenuList>
+                        <MenuList bg="white" color="#6e6e80">
                             <ProfileModal user={user}>
-                                <MenuItem>Profile</MenuItem>
+                                <MenuItem>
+                                <MdOutlineInfo />
+                                Profile
+                                </MenuItem>
                             </ProfileModal>
                             <MenuDivider />
-                            <MenuItem onClick={signoutUserHandler}>Sign Out</MenuItem>
+                            <MenuItem onClick={signoutUserHandler}>
+                                <MdLogout />
+                                Sign Out
+                            </MenuItem>
                         </MenuList>
                     </Menu>
                 </div>
             </Box>
-            <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+            <Drawer placement="left" onClose={onClose} isOpen={isOpen} >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent color="#abb2bf" bg="#282c34">
                     <DrawerHeader borderBottomWidth="1px">Search or Start a New Chat</DrawerHeader>
                     <DrawerBody>
                         <Box display="flex" paddingBottom={2}>
                             <Input placeholder='Name or Email' mr={2} value={search} onChange={(e) => setSearch(e.target.value)} />
-                            <Button onClick={handleSearch} >Search</Button>
+                            <Button onClick={handleSearch} color="white" bg="twitter.500">Search</Button>
                         </Box>
                         {loading ? (<ChatLoading />) : (searchResults?.map((user) => {
                             return <UserListItem key={user._id} user={user} handleClick={() => accessChat(user._id)} />
                         }))}
-                        {loadingChat && <Spinner ml="auto" display="flex" />}
+                        {loadingChat && <Spinner ml="auto" display="flex" color='#abb2bf' />}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>

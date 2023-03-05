@@ -174,7 +174,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent color="#abb2bf" bg="#282c34">
                     <ModalHeader display="flex" justifyContent="center" fontSize="35px" fontFamily="Fira sans">
                         {selectedChat.chatName}
                     </ModalHeader>
@@ -198,7 +198,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                             <Input placeholder="Add User" mb={1} onChange={(e) => handleSearch(e.target.value)} />
                         </FormControl>
                         {loading ? (
-                            <Spinner size="lg" />
+                            <Spinner size="lg" color='#abb2bf' />
                         ) : (
                             searchResults?.map((u) => {
                                 return (<UserListItem key={u._id} user={u} handleClick={() => handleAddUser(u)} />)
