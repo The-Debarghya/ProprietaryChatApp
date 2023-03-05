@@ -10,7 +10,7 @@ import io from 'socket.io-client'
 import ScrollableChat from './ScrollableChat'
 import { BeatLoader } from 'react-spinners'
 
-const ENDPOINT = "http://localhost:5000"
+const ENDPOINT = "http://localhost:3000"
 var socket, selectedChatCompare;
 
 const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
@@ -134,17 +134,17 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
     }
 
     return (
-        <div>{
-            selectedChat ? (<div>
+        <>{
+            selectedChat ? (<>
                 <Text fontSize={{ base: "28px", md: "30px" }} pb={3} px={2} width="100%" fontFamily="Fira sans" display="flex" justifyContent={{ base: "space-between" }} alignItems="center">
                     <IconButton display={{ base: "flex", md: "none" }} icon={<ArrowBackIcon />} onClick={() => setSelectedChat("")} />
                     {!selectedChat.isGroupChat ? (<>{getSender(user, selectedChat.users)}
                         <ProfileModal user={getSenderObj(user, selectedChat.users)} />
                     </>) : (
-                        <div>
+                        <>
                             {selectedChat.chatName}
                             <UpdateModal fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} fetchMessages={fetchMessages} />
-                        </div>
+                        </>
                     )}
                 </Text>
                 <Box display="flex" flexDir="column" justifyContent="flex-end"
@@ -163,14 +163,14 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                         <Input placeholder='Type a message' variant="filled" bg="#E0E0E0" onChange={typingHandler} value={newMessage} />
                     </FormControl>
                 </Box>
-            </div>) : (
-                <Box display="flex" alignItems="center" justifyContent="center" h="100%">
+            </>) : (
+                <Box display="flex" alignItems="center" justifyContent="center" height="100%">
                     <Text fontSize="3xl" fontFamily="Fira sans" pb={3}>
                         Click On a User to Start Chatting!
                     </Text>
                 </Box>
             )
-        }</div>
+        }</>
     )
 }
 

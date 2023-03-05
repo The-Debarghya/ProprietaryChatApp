@@ -6,7 +6,7 @@ const ProfileModal = ({ user, children }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
-        <div>
+        <>
             {children ? (<span onClick={onOpen}>{children}</span>) : (<IconButton display={{ base: "flex" }} onClick={onOpen} icon={<ViewIcon />} />)}
             <Modal size="lg" isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
@@ -16,7 +16,7 @@ const ProfileModal = ({ user, children }) => {
                     </ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody display="flex" flexDir="column" alignItems="center" justifyContent="space-between">
-                        <Image src={user.pic} alt={user.name} borderRadius="full" boxSize="150px" />
+                        <Image src={user.pic || user.profilePic} alt={user.name} borderRadius="full" boxSize="150px" />
                         <Text fontSize={{base: "28px", md: "30px"}} fontFamily="Fira sans">
                             Email: {user.email}
                         </Text>
@@ -28,7 +28,7 @@ const ProfileModal = ({ user, children }) => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-        </div>
+        </>
     )
 }
 

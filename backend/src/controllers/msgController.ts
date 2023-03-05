@@ -21,14 +21,14 @@ export const sendMessage = asyncHandler(async (req: Request, res: Response): Pro
         var message = await Message.create(newMessage);
         message = await message.populate([{
             path: "sender",
-            select: "name pic"
+            select: "name profilePic"
         }])
         message = await message.populate([{ path: "chat" }])
         var fullData = await User.populate(message, {
             path: "chat.users",
-            select: "name email pic"
+            select: "name email profilePic"
         })
-        await Chat.findByIdAndUpdate({
+        await Chat.findByIdAndUpdate(req.body.chatId, {
             latestMsg: fullData
         })
         res.json(fullData)
@@ -40,7 +40,7 @@ export const sendMessage = asyncHandler(async (req: Request, res: Response): Pro
 
 export const allMessages = asyncHandler(async (req:Request, res:Response) => {
     try {
-        const messages = await Message.find({chat: req.params.chatId}).populate("sender", "name email pic").populate("chat")
+        const messages = await Message.find({chat: req.params.chatId}).populate("sender", "name email profilePic").populate("chat")
         res.json(messages)
     } catch (error) {
         res.status(500)

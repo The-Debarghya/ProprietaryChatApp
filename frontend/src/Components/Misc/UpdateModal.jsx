@@ -54,7 +54,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
             }, headers)
             setSelectedChat(data)
             setFetchAgain(!fetchAgain)
-            setLoadingRename(false)
+            setloading(false)
         } catch (error) {
             toast({
                 title: "Unexpected Error Occurred!",
@@ -121,7 +121,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 }
             }
             const { data } = await axios.put('/api/chat/rename', {
-                chatId: groupChatName._id,
+                chatId: selectedChat._id,
                 chatName: groupChatName
             }, headers)
             setSelectedChat(data)
@@ -187,7 +187,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                         </Box>
                         <FormControl display="flex">
                             <Input placeholder="Chat Name" mb={3} value={groupChatName} onChange={(e) => setGroupChatName(e.target.value)} />
-                            <Button variant="solid" colorScheme="whatsapp.400" ml={1}
+                            <Button variant="solid" color="white" backgroundColor="#68D391" ml={1}
                                 isLoading={loadingRename}
                                 onClick={handleRename}
                             >

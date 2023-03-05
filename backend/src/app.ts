@@ -13,7 +13,7 @@ connectDb()
 
 const app: express.Application = express()
 
-const port = process.env.PORT
+const port = process.env.PORT || 3000
 app.use(cors())
 app.use(express.json())
 
@@ -31,7 +31,7 @@ const server = app.listen(port, (): void => {
 const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
-        origin: "http://localhost:3000",
+        origin: "http://localhost:5173",
     }
 })
 

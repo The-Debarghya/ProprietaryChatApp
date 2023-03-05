@@ -9,7 +9,8 @@ import ProfileModal from './ProfileModal'
 import UserListItem from '../User/UserListItem'
 import { MdPersonSearch } from 'react-icons/md'
 import { getSender } from '../../config/ChatLomgic'
-import { Badge } from '@mui/material'
+//import { StyledEngineProvider } from '@mui/material/styles';
+//import Badge from '@mui/material/Badge'
 
 const SideSearch = () => {
     const [search, setSearch] = useState("")
@@ -106,9 +107,11 @@ const SideSearch = () => {
                 <div>
                     <Menu>
                         <MenuButton p={1}>
-                            <Badge badgeContent={notification.length} color="error" max={9}>
-                                <BellIcon fontSize="2xl" m={1} />
-                            </Badge>
+                            {/*<StyledEngineProvider injectFirst>
+                                <Badge badgeContent={notification.length} color="error" max={9}>
+                                    <BellIcon fontSize="2xl" m={1} />
+                                </Badge>
+    </StyledEngineProvider>*/}
                         </MenuButton>
                         <MenuList pl={3}>
                             {!notification.length && "No New Messages"}
