@@ -58,7 +58,7 @@ const AllChats = ({fetchAgain}) => {
               return (<Box onClick={() => setSelectedChat(chat)} cursor="pointer" px={3} py={2} borderRadius="lg" key={chat._id}
                 bg={selectedChat === chat ? "#56b6c2" : "#5c6370"} color={selectedChat === chat ? "white" : "#abb2bf"}
               >
-                {!chat.isGroupChat ? (<Avatar src={chat.users[0].profilePic} />) : (<Avatar alt={chat.chatName} src="https://lh3.googleusercontent.com/ABlX4ekWIQimPjZ1HlsMLYXibPo2xiWnZ2iny1clXQm2IQTcU2RG0-4S1srWsBQmGAo"/>)}
+                {!chat.isGroupChat ? (<Avatar src={chat.users[0]._id === user._id ? chat.users[1].profilePic : chat.users[0].profilePic} />) : (<Avatar alt={chat.chatName} src="https://lh3.googleusercontent.com/ABlX4ekWIQimPjZ1HlsMLYXibPo2xiWnZ2iny1clXQm2IQTcU2RG0-4S1srWsBQmGAo"/>)}
                 <Text>
                   {!chat.isGroupChat ? (getSender(loggedInUser, chat.users)) : (chat.chatName)}
                 </Text>

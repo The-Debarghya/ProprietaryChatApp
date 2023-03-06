@@ -186,12 +186,11 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                         </div>
                     )}
                     <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-                        {isTyping ? (<div style={{ display: "flex", alignItems: "left" }}>
+                        {isTyping && !selectedChat.isGroupChat ? (<div style={{ display: "flex", alignItems: "left" }}>
                             <Text fontStyle="italic" color="white">{`${getSender(user, selectedChat.users)} is typing`}</Text>
                             <BeatLoader size={5} color='white' width={70} style={{ marginBottom: 15, marginLeft: 6 }} />
                         </div>) : <></>}
                         <Box display="flex" flexDir="row" justifyContent="space-evenly">
-
                             <Input placeholder='Type a message' variant="filled" bg="#E0E0E0" onChange={typingHandler} value={newMessage} />
                             <IconButton icon={<MdSend />} color="#abb2bf" bg="green.500" onClick={handleSend} />
                         </Box>

@@ -125,7 +125,7 @@ const SideSearch = () => {
                         <MenuList pl={3} color="white" bg="#6e6e80">
                             {!notification.length && "No New Messages"}
                             {notification.map((notif) => {
-                                return (<MenuItem key={notif._id} onClick={() => {
+                                return (<MenuItem bg="#6e6e80" key={notif._id} onClick={() => {
                                     setSelectedChat(notif.chat);
                                     setNotification(notification.filter((n) => n !== notif))
                                 }}>
