@@ -32,6 +32,11 @@ const server = app.listen(port, (): void => {
     console.log(`Server is up and running at ::${port}`)
 })
 
+interface ISocket extends Socket {
+    name?: string,
+    userId?: string
+}
+
 const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
@@ -39,7 +44,7 @@ const io = new Server(server, {
     }
 })
 
-io.on("connection", (socket: Socket) => {
+io.on("connection", (socket: ISocket) => {
     console.log("Connected to Socket.io Successfully!")
 
     socket.on('setup', (userData) => {
@@ -71,8 +76,21 @@ io.on("connection", (socket: Socket) => {
         })
     })
 
+    
+    socket.on("offline-status", (userId) => {
+        const data = {
+            username: userId,
+            isActive: false
+        }
+        socket.broadcast.emit("online-status", data)
+    })
+    
     socket.on("disconnect", () => {
-        console.log("User gone offline!")
+        console.log("User gone offline! " + socket.id)
+    })
+
+    socket.on("online-status", (data) => {
+        socket.broadcast.emit("online-status", data)
     })
 
     socket.off("setup", (userData) => {

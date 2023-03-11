@@ -2,7 +2,7 @@ import { ArrowBackIcon } from '@chakra-ui/icons'
 import { Box, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../../Context/ChatProvider'
-import { getSender, getSenderObj } from "../../config/ChatLomgic"
+import { getSender, getSenderId, getSenderObj } from "../../config/ChatLomgic"
 import ProfileModal from './ProfileModal'
 import UpdateModal from './UpdateModal'
 import axios from 'axios'
@@ -10,11 +10,20 @@ import io from 'socket.io-client'
 import ScrollableChat from './ScrollableChat'
 import { BeatLoader } from 'react-spinners'
 import { MdSend } from 'react-icons/md'
+import { StyledEngineProvider, createTheme, ThemeProvider } from '@mui/material/styles';
+import Badge from '@mui/material/Badge'
+import { Avatar } from '@mui/material'
 
 const ENDPOINT = "http://localhost:3000"
 var socket, selectedChatCompare;
 
 const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
+    const theme = createTheme({
+        typography: {
+            fontFamily: "Fira sans, sans-serif"
+        },
+    });
+
     const { user, selectedChat, setSelectedChat, notification, setNotification } = ChatState()
     const [messages, setMessages] = useState([])
     const [loading, setloading] = useState(false)
@@ -22,6 +31,7 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
     const [socketConnected, setSocketConnected] = useState(false)
     const [typing, setTyping] = useState(false)
     const [isTyping, setIsTyping] = useState(false)
+    const [onlineUsers, setOnlineUsers] = useState([])
 
     const toast = useToast()
 
@@ -65,6 +75,7 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
         fetchMessages()
         selectedChatCompare = selectedChat
     }, [selectedChat])
+
 
     useEffect(() => {
         socket.on("message received", (newMessageReceived) => {
@@ -113,31 +124,31 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
 
     const handleSend = async () => {
         socket.emit('stop typing', selectedChat._id)
-            try {
-                const headers = {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${user.token}`
-                    }
+        try {
+            const headers = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`
                 }
-                setNewMessage("")
-                const { data } = await axios.post('/api/message', {
-                    content: newMessage,
-                    chatId: selectedChat._id
-                }, headers)
-
-                socket.emit('new message', data)
-                setMessages([...messages, data])
-            } catch (error) {
-                toast({
-                    title: "Unexpected Error Occurred!",
-                    description: "Error occurred while sending message",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top",
-                })
             }
+            setNewMessage("")
+            const { data } = await axios.post('/api/message', {
+                content: newMessage,
+                chatId: selectedChat._id
+            }, headers)
+
+            socket.emit('new message', data)
+            setMessages([...messages, data])
+        } catch (error) {
+            toast({
+                title: "Unexpected Error Occurred!",
+                description: "Error occurred while sending message",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+            })
+        }
     }
 
     const typingHandler = (event) => {
@@ -163,12 +174,56 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
         }, timeOut)
     }
 
+    const checkOnline = async () => {
+        const intervalId = setInterval(() => {
+            if (socketConnected) {
+                const data = {
+                    username: user._id,
+                    isActive: true
+                }
+                socket.emit("online-status", data)
+            }
+        }, 500)
+        socket.on("online-status", (data) => {
+            if (data.isActive) {
+                if (data.username !== user._id && onlineUsers.indexOf(data.username) === -1) {
+                    setOnlineUsers([...onlineUsers, data.username])
+                }
+            } else {
+                console.log(`Offline ${data.username}`)
+                setOnlineUsers(onlineUsers.filter((username) => username !== data.username))
+            }
+        })
+        return intervalId
+    }
+
+    useEffect(() => {
+        if (selectedChat && !selectedChat.isGroupChat) {
+            const intervalId = checkOnline()
+            return () => clearInterval(intervalId)
+        }
+    }, [selectedChat])
+
+
+
     return (
         <>{
             selectedChat ? (<>
                 <Text fontSize={{ base: "28px", md: "30px" }} pb={3} px={2} width="100%" fontFamily="Fira sans" display="flex" justifyContent={{ base: "space-between" }} alignItems="center">
                     <IconButton display={{ base: "flex", md: "none" }} icon={<ArrowBackIcon />} onClick={() => setSelectedChat("")} />
-                    {!selectedChat.isGroupChat ? (<>{getSender(user, selectedChat.users)}
+                    {!selectedChat.isGroupChat ? (<>
+                        <ThemeProvider theme={theme}>
+                            <StyledEngineProvider injectFirst>
+                                <Badge variant='dot' overlap='circular' color={onlineUsers.indexOf(getSenderId(user, selectedChat.users)) > -1 ? "success": "error"} 
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}>
+                                    <Avatar src={getSenderObj(user, selectedChat.users).profilePic} alt={getSender(user, selectedChat.users)} />
+                                </Badge>
+                            </StyledEngineProvider>
+                        </ThemeProvider>
+                        {getSender(user, selectedChat.users)}
                         <ProfileModal user={getSenderObj(user, selectedChat.users)} />
                     </>) : (
                         <>
@@ -207,4 +262,5 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
     )
 }
 
+export { socket }
 export default ChatInterFace

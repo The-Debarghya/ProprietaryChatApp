@@ -62,11 +62,11 @@ const Signin = () => {
 
     return (
         <VStack spacing="5px" color="#abb2bf" background="#282c34">
-            <FormControl id='email' isRequired>
+            <FormControl id='email2' isRequired>
                 <FormLabel>Email</FormLabel>
                 <Input placeholder='user@example.com' type="email" value={email} borderColor="blue.300" onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
-            <FormControl id='password' isRequired>
+            <FormControl id='password2' isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
                     <Input type={show ? "text" : "password"} value={password} borderColor="blue.300" onChange={(e) => setPassword(e.target.value)} />

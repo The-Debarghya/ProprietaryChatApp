@@ -11,6 +11,7 @@ import { MdLogout, MdOutlineInfo, MdPersonSearch } from 'react-icons/md'
 import { getSender } from '../../config/ChatLomgic'
 import { StyledEngineProvider, createTheme, ThemeProvider } from '@mui/material/styles';
 import Badge from '@mui/material/Badge'
+import {socket} from './ChatInterFace'
 
 const SideSearch = () => {
     const theme = createTheme({
@@ -94,6 +95,8 @@ const SideSearch = () => {
     }
     const signoutUserHandler = () => {
         localStorage.removeItem("userInfo")
+        socket.emit("offline-status", user._id)
+        socket.disconnect()
         navigate("/")
     }
     return (

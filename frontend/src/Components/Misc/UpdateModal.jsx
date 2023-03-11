@@ -169,7 +169,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
     }
 
     return (
-        <div>
+        <>
             <IconButton display={{ base: "flex" }} icon={<InfoIcon />} onClick={onOpen} />
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -213,7 +213,7 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-        </div>
+        </>
     )
 }
 
