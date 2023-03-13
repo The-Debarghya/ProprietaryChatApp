@@ -7,7 +7,7 @@ import { ChatState } from '../../Context/ChatProvider'
 import ChatLoading from './ChatLoading'
 import ProfileModal from './ProfileModal'
 import UserListItem from '../User/UserListItem'
-import { MdLogout, MdOutlineInfo, MdPersonSearch } from 'react-icons/md'
+import { MdLogout, MdNotifications, MdOutlineInfo, MdPersonSearch } from 'react-icons/md'
 import { getSender } from '../../config/ChatLomgic'
 import { StyledEngineProvider, createTheme, ThemeProvider } from '@mui/material/styles';
 import Badge from '@mui/material/Badge'
@@ -119,8 +119,8 @@ const SideSearch = () => {
                         <MenuButton p={1}>
                             <ThemeProvider theme={theme}>
                                 <StyledEngineProvider injectFirst>
-                                    <Badge badgeContent={notification.length} color="primary" max={9}>
-                                        <BellIcon fontSize="lg" m={8} />
+                                    <Badge badgeContent={notification.length} color="primary" overlap='circular' max={9}>
+                                        <MdNotifications fontSize="lg" size={25} />
                                     </Badge>
                                 </StyledEngineProvider>
                             </ThemeProvider>

@@ -12,9 +12,9 @@ import { BeatLoader } from 'react-spinners'
 import { MdSend } from 'react-icons/md'
 import { StyledEngineProvider, createTheme, ThemeProvider } from '@mui/material/styles';
 import Badge from '@mui/material/Badge'
-import { Avatar } from '@mui/material'
+import { Avatar, Tooltip } from '@mui/material'
 
-const ENDPOINT = "http://localhost:3000"
+const ENDPOINT = "http://192.168.0.28:3000"
 var socket, selectedChatCompare;
 
 const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
@@ -219,7 +219,9 @@ const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
                                     vertical: 'bottom',
                                     horizontal: 'right',
                                 }}>
-                                    <Avatar src={getSenderObj(user, selectedChat.users).profilePic} alt={getSender(user, selectedChat.users)} />
+                                    <Tooltip title={onlineUsers.indexOf(getSenderId(user, selectedChat.users)) > -1 ? "Online":"Offline"}>
+                                        <Avatar src={getSenderObj(user, selectedChat.users).profilePic} alt={getSender(user, selectedChat.users)} />
+                                    </Tooltip>
                                 </Badge>
                             </StyledEngineProvider>
                         </ThemeProvider>

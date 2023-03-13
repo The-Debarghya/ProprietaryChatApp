@@ -132,4 +132,19 @@ const removeFromGrp = asyncHandler(async (req: Request, res: Response) => {
     }
 })
 
-export { addToGrp, accessChat, fetchAllChats, createGrpChat, renameGrp, removeFromGrp }
+const deleteGrpChat = asyncHandler(async (req:Request, res:Response) => {
+    const {chatId, userId} = req.body
+    if (!chatId || !userId) {
+        res.status(400)
+        throw new Error("Chat ID/ User ID not received!")
+    }
+    const destroyedGrp = await Chat.deleteOne({_id:chatId})
+    if (!destroyedGrp) {
+        res.status(404)
+        throw new Error("Requested Chat Not Found!")
+    } else {
+        res.status(200).json(destroyedGrp)
+    }
+})
+
+export { addToGrp, accessChat, fetchAllChats, createGrpChat, renameGrp, removeFromGrp, deleteGrpChat }

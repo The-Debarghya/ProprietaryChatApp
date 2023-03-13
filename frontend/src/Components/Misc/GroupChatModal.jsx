@@ -59,7 +59,9 @@ const GroupChatModal = ({ children }) => {
                     Authorization: `Bearer ${user.token}`
                 }
             }
-            
+            if (selectedUsers.length <= 2) {
+                throw new Error("Please add at least 2 members!")
+            }
             const {data} = await axios.post('/api/chat/group', {
                 name: groupChatName,
                 users: JSON.stringify(selectedUsers.map(u => u._id))
@@ -76,7 +78,7 @@ const GroupChatModal = ({ children }) => {
         } catch (error) {
             toast({
                 title: "Unexpected Error Occurred!",
-                description: error.response.data,
+                description: error.message,
                 status: "error",
                 duration: 5000,
                 isClosable: true,

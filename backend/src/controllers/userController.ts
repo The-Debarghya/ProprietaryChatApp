@@ -49,7 +49,13 @@ const authenticateUser = asyncHandler(async (req: Request, res: Response) => {
                 pic: user.profilePic,
                 token: generateToken(user._id),
             })
+        }else{
+            res.status(400)
+            throw new Error("Invalid Creds");            
         }
+    }else{
+        res.status(400)
+        throw new Error("Invalid Creds"); 
     }
 })
 

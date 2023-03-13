@@ -1,5 +1,5 @@
-import { InfoIcon } from '@chakra-ui/icons'
-import { Box, Button, FormControl, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, useDisclosure, useToast } from '@chakra-ui/react'
+import { DeleteIcon, SettingsIcon } from '@chakra-ui/icons'
+import { Box, Button, FormControl, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { ChatState } from '../../Context/ChatProvider'
@@ -109,6 +109,45 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         }
         setGroupChatName("")
     }
+
+    const handleDelete = async (currUser) => {
+        if (selectedChat.groupAdmin._id !== user._id && currUser._id !== user._id) {
+            toast({
+                title: "Only admins can destroy a group!",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
+            return;
+        }
+
+        try {
+            const headers = {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
+            const { data } = await axios.put(`/api/chat/deletegrp`,{
+                chatId: selectedChat._id,
+                userId: currUser._id
+            },headers);
+            setFetchAgain(!fetchAgain);
+            fetchMessages();
+        } catch (error) {
+            toast({
+                title: "Error Occured!",
+                description: error.message,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
+        }
+        setGroupChatName("")
+        setSelectedChat(selectedChat[1])
+    }
+
     const handleRename = async () => {
         if (!groupChatName) {
             return
@@ -170,7 +209,10 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
     return (
         <>
-            <IconButton display={{ base: "flex" }} icon={<InfoIcon />} onClick={onOpen} />
+            <Tooltip label="Group Settings" hasArrow placement="bottom-end">
+            <IconButton display={{ base: "flex" }} icon={<SettingsIcon />} onClick={onOpen} />
+
+            </Tooltip>
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
@@ -209,6 +251,12 @@ const UpdateModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                     <ModalFooter>
                         <Button colorScheme='red' mr={3} onClick={() => handleRemove(user)}>
                             Leave Group
+                        </Button>
+                        <Button colorScheme="red" variant="outline" display="flex" justifyContent="space-between" alignContent="center"
+                         onClick={() => handleDelete(user)}
+                        >
+                            <DeleteIcon />
+                            Delete Group
                         </Button>
                     </ModalFooter>
                 </ModalContent>
