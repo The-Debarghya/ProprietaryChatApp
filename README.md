@@ -60,3 +60,4 @@ A real-time one-to-one, many-to-many chat application. Built with `Express-Types
 docker compose up
 ```
 
+_P.S-The name **ProprietaryChatApp** is intentionally given to mock the teacher who gave the assignment as she thinks the idea of a chat application is her own creation!!!_
