@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  chat-backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+  chat-frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    expose:
+      - 5173
+    depends_on:
+      - chat-backend
+  db:
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    expose:
+      - 27017
+    volumes:
+      - data:/data/db
+
+volumes:
+  data:
