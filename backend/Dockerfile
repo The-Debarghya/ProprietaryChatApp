@@ -1,4 +1,4 @@
-FROM node:18-slim AS builder
+FROM node:lts-slim AS builder
 
 WORKDIR /build
 
@@ -12,7 +12,7 @@ RUN mkdir /build/dist
 
 RUN tsc
 
-FROM node:18-slim AS deps
+FROM node:lts-slim AS deps
 
 WORKDIR /deps
 
@@ -20,7 +20,7 @@ COPY package*.json .
 RUN npm install --omit=dev
 
 
-FROM node:18-alpine AS final
+FROM node:lts-alpine AS final
 
 WORKDIR /app
 ENV PORT=3000
@@ -36,4 +36,4 @@ RUN adduser -D user --shell /usr/sbin/nologin \
 
 USER user
 
-ENTRYPOINT [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start" ]

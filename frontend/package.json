@@ -8,6 +8,8 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "author": "Debarghya Maitra",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.5.0",
