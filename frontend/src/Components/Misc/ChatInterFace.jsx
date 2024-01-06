@@ -14,7 +14,7 @@ import { StyledEngineProvider, createTheme, ThemeProvider } from '@mui/material/
 import Badge from '@mui/material/Badge'
 import { Avatar, Tooltip } from '@mui/material'
 
-const ENDPOINT = "http://192.168.0.28:3000"
+const ENDPOINT = "http://localhost:3000"
 var socket, selectedChatCompare;
 
 const ChatInterFace = ({ fetchAgain, setFetchAgain }) => {
